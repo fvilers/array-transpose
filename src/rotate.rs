@@ -22,8 +22,8 @@ where
         self.transpose(|index| {
             let (x, y) = index_to_coords(index, len);
             match direction {
-                RotationDirection::Left => coords_to_index(len - 1 - y, x, len),
-                RotationDirection::Right => coords_to_index(y, len - 1 - x, len),
+                RotationDirection::Left => coords_to_index(y, len - 1 - x, len),
+                RotationDirection::Right => coords_to_index(len - 1 - y, x, len),
             }
         })
     }

@@ -19,8 +19,8 @@ where
         self.transpose(|index| {
             let (x, y) = index_to_coords(index, len);
             match axis {
-                FlipAxis::Horizontal => coords_to_index(len - 1 - x, y, len),
-                FlipAxis::Vertical => coords_to_index(x, len - 1 - y, len),
+                FlipAxis::Horizontal => coords_to_index(x, len - 1 - y, len),
+                FlipAxis::Vertical => coords_to_index(len - 1 - x, y, len),
             }
         })
     }

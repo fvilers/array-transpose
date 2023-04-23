@@ -24,10 +24,10 @@ where
         self.transpose(|index| {
             let (x, y) = index_to_coords(index, len);
             match direction {
-                PushDirection::Down => coords_to_index((x + len + 1) % len, y, len),
-                PushDirection::Left => coords_to_index(x, (y + len - 1) % len, len),
-                PushDirection::Right => coords_to_index(x, (y + len + 1) % len, len),
-                PushDirection::Up => coords_to_index((x + len - 1) % len, y, len),
+                PushDirection::Down => coords_to_index(x, (y + len + 1) % len, len),
+                PushDirection::Left => coords_to_index((x + len - 1) % len, y, len),
+                PushDirection::Right => coords_to_index((x + len + 1) % len, y, len),
+                PushDirection::Up => coords_to_index(x, (y + len - 1) % len, len),
             }
         })
     }
