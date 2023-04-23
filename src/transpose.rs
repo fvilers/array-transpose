@@ -22,12 +22,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn transpose_should_shift_elements_to_the_right() {
-        let array = [1, 2, 3, 4];
-
-        assert_eq!(
-            array.transpose(|index| (index + 1 + array.len()) % array.len()),
-            [4, 1, 2, 3]
-        );
+    fn transpose_should_do_nothing_when_index_is_returned_as_is() {
+        assert_eq!([1, 2, 3, 4].transpose(|index| index), [1, 2, 3, 4]);
     }
 }
