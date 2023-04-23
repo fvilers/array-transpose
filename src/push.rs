@@ -1,4 +1,4 @@
-use crate::Transpose;
+use crate::{coords_to_index, index_to_coords, Transpose};
 
 pub enum PushDirection {
     Left,
@@ -17,11 +17,14 @@ where
     T: Copy + Default,
 {
     fn push(&self, direction: PushDirection) -> [T; N] {
-        let len = self.len();
+        let len = (N as f64).sqrt() as usize;
 
-        self.transpose(|index| match direction {
-            PushDirection::Left => (index + len - 1) % len,
-            PushDirection::Right => (index + len + 1) % len,
+        self.transpose(|index| {
+            let (x, y) = index_to_coords(index, len);
+            match direction {
+                PushDirection::Left => coords_to_index(x, (y + len - 1) % len, len),
+                PushDirection::Right => coords_to_index(x, (y + len + 1) % len, len),
+            }
         })
     }
 }
@@ -31,16 +34,50 @@ mod tests {
     use super::*;
 
     #[test]
-    fn push_should_shift_elements_to_the_left() {
-        let array = [1, 2, 3, 4];
+    fn push_left_should_return_a_pushed_array_of_1_element() {
+        let actual = [1];
+        let result = actual.push(PushDirection::Left);
 
-        assert_eq!(array.push(PushDirection::Left), [2, 3, 4, 1]);
+        assert_eq!([1], result);
     }
 
     #[test]
-    fn push_should_shift_elements_to_the_right() {
-        let array = [1, 2, 3, 4];
+    fn push_right_should_return_a_pushed_array_of_1_element() {
+        let actual = [1];
+        let result = actual.push(PushDirection::Right);
 
-        assert_eq!(array.push(PushDirection::Right), [4, 1, 2, 3]);
+        assert_eq!([1], result);
+    }
+
+    #[test]
+    fn push_left_should_return_a_pushed_array_of_4_elements() {
+        let actual = [1, 2, 3, 4];
+        let result = actual.push(PushDirection::Left);
+
+        assert_eq!([2, 1, 4, 3], result);
+    }
+
+    #[test]
+    fn push_right_should_return_a_pushed_array_of_4_elements() {
+        let actual = [1, 2, 3, 4];
+        let result = actual.push(PushDirection::Right);
+
+        assert_eq!([2, 1, 4, 3], result);
+    }
+
+    #[test]
+    fn push_left_should_return_a_pushed_array_of_9_elements() {
+        let actual = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let result = actual.push(PushDirection::Left);
+
+        assert_eq!([2, 3, 1, 5, 6, 4, 8, 9, 7], result);
+    }
+
+    #[test]
+    fn push_right_should_return_a_pushed_array_of_9_elements() {
+        let actual = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let result = actual.push(PushDirection::Right);
+
+        assert_eq!([3, 1, 2, 6, 4, 5, 9, 7, 8], result);
     }
 }
