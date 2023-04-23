@@ -1,7 +1,9 @@
+mod flip;
 mod push;
 mod rotate;
 mod transpose;
 
+pub use flip::{Flip, FlipAxis};
 pub use push::{Push, PushDirection};
 pub use rotate::{Rotate, RotationDirection};
 pub use transpose::Transpose;
